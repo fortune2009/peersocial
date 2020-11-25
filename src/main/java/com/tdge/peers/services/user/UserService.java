@@ -21,6 +21,6 @@ public interface UserService {
 
     List<User> findAll();
 
-    List<User> findUser(Long userId);
+    User findUser(Long userId) throws UserAccountExistsException;
 
 }

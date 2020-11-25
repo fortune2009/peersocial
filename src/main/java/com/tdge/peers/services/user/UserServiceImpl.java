@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
             newUser.get().setGenderType(user.getGenderType());
             newUser.get().setPhoneNumber(user.getPhoneNumber());
             User updatedUser = newUser.get();
+
             return userRepository.save(updatedUser);
         }
         else {
@@ -67,15 +68,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUser(Long userId) {
+    public User findUser(Long userId) throws UserAccountExistsException {
         Optional<User> result = userRepository.findById(userId);
 
         if(result.isPresent()) {
             User presentUser = result.get();
-            List<User> aUser = new ArrayList<>();
-            aUser.add(presentUser);
-            return aUser;
+            return presentUser;
+//            List<User> aUser = new ArrayList<>();
+//            aUser.add(presentUser);
+//            return aUser;
         }
-        return null;
+        else {
+            throw new UserAccountExistsException("User Not Found");
+        }
+
     }
 }

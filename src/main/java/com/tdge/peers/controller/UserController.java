@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -50,15 +51,23 @@ public class UserController {
     }
 
     @GetMapping("/allUser")
-    public List<User> getAllUser(){
-        log.info("all users -> " + userServiceImpl.findAll());
-        return userServiceImpl.findAll();
+    public ResponseEntity<List<User>> getAllUser(){
+        List<User> allUser = userServiceImpl.findAll();
+        log.info("all users -> " + allUser);
+        return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public List<User> getUser(@PathVariable("id") Long id){
-        log.info("A particular user -> " + userServiceImpl.findUser(id));
-        return userServiceImpl.findUser(id);
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id) throws UserAccountExistsException {
+        try{
+            log.info("A particular user -> " + userServiceImpl.findUser(id));
+            User oneUser = userServiceImpl.findUser(id);
+            return new ResponseEntity<>(oneUser, HttpStatus.OK);
+        }catch (UserAccountExistsException exception){
+            System.err.println(exception.getMessage());
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
