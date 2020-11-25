@@ -1,6 +1,6 @@
 package com.tdge.peers.model;
 
-import com.tdge.peers.model.enums.PhotoType;
+import com.tdge.peers.model.enums.PermissionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +11,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Image {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
+    private Long permissionId;
 
-    @ManyToOne
-    private User user;
+    @OneToOne
+    private User userRole;
 
-    private String imageName;
+    private PermissionType permissionTitle;
 
-    private String imageDescription;
+    private String permissionModule;
 
-    private PhotoType imageType;
-
-    private String imageUrl;
-
+    private String permissionDescription;
 }

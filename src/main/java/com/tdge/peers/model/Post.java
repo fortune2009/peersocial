@@ -1,6 +1,6 @@
 package com.tdge.peers.model;
 
-import com.tdge.peers.model.enums.PhotoType;
+import com.tdge.peers.model.enums.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +11,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Image {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
+    private Long postId;
+
+    private String postTitle;
+
+    private PostType postType;
+
+    private String postDescription;
 
     @ManyToOne
-    private User user;
+    private User userId;
 
-    private String imageName;
-
-    private String imageDescription;
-
-    private PhotoType imageType;
-
-    private String imageUrl;
-
+    @OneToOne
+    private Shares sharePost;
 }

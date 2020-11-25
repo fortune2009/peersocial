@@ -1,12 +1,18 @@
 package com.tdge.peers.model;
 
+import com.tdge.peers.model.enums.GenderType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.minidev.json.annotate.JsonIgnore;
+//import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class User {
     @Id
@@ -21,35 +27,43 @@ public class User {
 
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private GenderType genderType;
 
     private String phoneNumber;
 
     @OneToOne
     private Address address;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Role userRole;
+
     @Column(nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     @ToString.Exclude
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> post;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Image> allImages;
 
     private String coverImage;
 
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
     private String profileImage;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Video> allVideos;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Video> videos;
 
-    @OneToMany
-    private List<User> friends;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Friend> friends;
+
+
 }
