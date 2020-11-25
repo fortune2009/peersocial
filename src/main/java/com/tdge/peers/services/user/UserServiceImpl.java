@@ -68,15 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUser(Long userId) throws UserAccountExistsException {
+    public User findUser(Long userId) throws UserAccountExistsException{
         Optional<User> result = userRepository.findById(userId);
 
         if(result.isPresent()) {
-            User presentUser = result.get();
-            return presentUser;
-//            List<User> aUser = new ArrayList<>();
-//            aUser.add(presentUser);
-//            return aUser;
+            return result.get();
         }
         else {
             throw new UserAccountExistsException("User Not Found");
